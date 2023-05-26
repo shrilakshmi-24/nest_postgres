@@ -26,13 +26,12 @@ export class UserService {
   }
 
   findAll() {
-    return this.userRepository.find()
+    return this.userRepository.find();
   }
 
   async findOne(id: number): Promise<User | undefined> {
     return this.userRepository.findOne({ where: { id } });
   }
-
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
