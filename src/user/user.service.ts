@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException, Param } from '@nestjs/common';
+import { Injectable, NotFoundException, Param, UseInterceptors } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundError } from 'rxjs';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Injectable()
 export class UserService {
@@ -14,14 +15,8 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const user = this.userRepository.create({
-      firstName: createUserDto.firstName,
-      lastName: createUserDto.lastName,
-      age: createUserDto.age,
-    });
-
+    const user = this.userRepository.create(createUserDto);
     const savedUser = await this.userRepository.save(user);
-
     return savedUser;
   }
 
